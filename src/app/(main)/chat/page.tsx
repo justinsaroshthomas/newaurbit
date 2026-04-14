@@ -130,7 +130,7 @@ export default function ChatPage() {
     if (!file || !user) return;
 
     setIsUploading(true);
-    const fileExt = file instanceof File ? file.name.split('.').pop() ?? 'jpg' : 'jpg';
+    const fileExt = file instanceof File ? file.name.split('.').pop() || 'jpg' : 'jpg';
     const fileName = `${user.id}-${Math.random()}.${fileExt}`;
     const filePath = `chat/${fileName}`;
 
