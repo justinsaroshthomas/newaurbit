@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef, useState, useEffect } from 'react';
-import { Camera, X, RefreshCcw, Flashlight, Circle } from 'lucide-react';
+import { Camera, X, RefreshCcw } from 'lucide-react';
 import styles from './camera.module.css';
 
 interface CameraModalProps {

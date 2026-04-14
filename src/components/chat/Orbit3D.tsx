@@ -50,7 +50,15 @@ function CentralPlanet({ lowPower = false }) {
   );
 }
 
-function OrbitingSatellite({ color, distance, speed, offset, size = 0.2 }) {
+interface OrbitingSatelliteProps {
+  color: string;
+  distance: number;
+  speed: number;
+  offset: number;
+  size?: number;
+}
+
+function OrbitingSatellite({ color, distance, speed, offset, size = 0.2 }: OrbitingSatelliteProps) {
   const groupRef = useRef<THREE.Group>(null!);
 
   useFrame((state) => {

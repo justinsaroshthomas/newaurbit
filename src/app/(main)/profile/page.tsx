@@ -120,7 +120,7 @@ export default function ProfilePage() {
             <div className={styles.nameRow}>
               <h1 className={styles.userName}>{formData.full_name || user?.fullName || 'Aurbit User'}</h1>
               {profileData?.is_verified && (
-                <CheckCircle size={20} className="verified-badge" title="Verified Orbit" />
+                <CheckCircle size={20} className="verified-badge" aria-label="Verified Orbit" />
               )}
             </div>
             <p className={styles.bio}>{formData.bio || 'No bio yet'}</p>
@@ -132,7 +132,7 @@ export default function ProfilePage() {
           </div>
 
           <div style={{ marginLeft: 'auto', paddingTop: '16px' }}>
-            <UserButton afterSignOutUrl="/login" />
+            <UserButton />
           </div>
         </div>
 
