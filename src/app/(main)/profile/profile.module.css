@@ -1,0 +1,398 @@
+.profileContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 0 0 32px 0;
+  max-width: 1000px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .profileContainer {
+    padding: 24px;
+  }
+}
+
+.heroSection {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 24px;
+}
+
+@media (min-width: 768px) {
+  .heroSection {
+    border-radius: 16px;
+    box-shadow: var(--glass-shadow);
+  }
+}
+
+.coverImage {
+  width: 100%;
+  height: 200px;
+  background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%); /* Placeholder cover */
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  .coverImage {
+    height: 300px;
+  }
+}
+
+.editCoverBtn {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  padding: 8px 16px;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.editCoverBtn:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.heroContent {
+  display: flex;
+  flex-direction: column;
+  padding: 0 24px;
+  position: relative;
+  margin-top: -60px; /* Overlap avatar onto cover */
+}
+
+@media (min-width: 768px) {
+  .heroContent {
+    flex-direction: row;
+    align-items: flex-end;
+    margin-top: -50px;
+  }
+}
+
+.avatarContainer {
+  position: relative;
+  width: 120px;
+  height: 120px;
+}
+
+.avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: var(--surface); /* Darker backdrop */
+  border: 4px solid var(--background);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  font-weight: 800;
+  color: var(--primary);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.editAvatarBtn {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  transition: all 0.2s;
+  color: var(--foreground);
+}
+
+.editAvatarBtn:hover {
+  transform: scale(1.1);
+}
+
+.userInfoBlock {
+  padding-top: 16px;
+  padding-bottom: 24px;
+  flex: 1;
+}
+
+@media (min-width: 768px) {
+  .userInfoBlock {
+    padding-top: 0;
+    padding-left: 24px;
+    padding-bottom: 16px;
+  }
+}
+
+.userName {
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.bio {
+  font-size: 15px;
+  opacity: 0.8;
+  margin-bottom: 12px;
+}
+
+.userTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.tag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  opacity: 0.6;
+}
+
+.profileTabs {
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  overflow-x: auto;
+  border-top: 1px solid var(--border);
+  scrollbar-width: none;
+}
+.profileTabs::-webkit-scrollbar { display: none; }
+
+.tab {
+  padding: 20px 24px;
+  font-weight: 600;
+  font-size: 15px;
+  color: inherit;
+  opacity: 0.6;
+  white-space: nowrap;
+  position: relative;
+  transition: all 0.2s;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.tab:hover {
+  opacity: 1;
+}
+
+.tab.activeTab {
+  opacity: 1;
+  color: var(--primary);
+}
+
+.tab.activeTab::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--primary);
+  border-radius: 3px 3px 0 0;
+}
+
+.tabCount {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 4px 8px;
+  background: rgba(128,128,128,0.2);
+  border-radius: 12px;
+  font-size: 11px;
+}
+
+.iconTab {
+  margin-left: auto;
+  padding: 20px 16px;
+  opacity: 0.6;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+.iconTab:hover { opacity: 1; transform: rotate(90deg); transition: transform 0.3s; }
+
+/* Content Grid */
+.profileGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  padding: 0 16px;
+}
+
+@media (min-width: 1024px) {
+  .profileGrid {
+    grid-template-columns: 320px 1fr;
+    padding: 0;
+  }
+}
+
+.cardContent {
+  padding: 24px;
+}
+
+.cardTitle {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.aboutRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.infoIcon {
+  width: 48px;
+  height: 48px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.aboutText {
+  display: flex;
+  flex-direction: column;
+}
+
+.aboutLabel {
+  font-weight: 700;
+  font-size: 15px;
+}
+.aboutValue {
+  font-size: 13px;
+  opacity: 0.6;
+}
+
+.composerCard {
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.postCard {
+  padding: 24px;
+  margin-bottom: 16px;
+}
+
+.postContent {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.nameRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.settingDivider {
+  height: 1px;
+  background: var(--glass-border);
+  margin: 32px 0;
+}
+
+.themeGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.themeBtn {
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.05);
+  border: 2px solid transparent;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--foreground);
+}
+
+.themeBtn:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+.themeBtn.activeTheme {
+  background: rgba(255,255,255,0.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.toggleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0;
+  margin-top: 8px;
+}
+
+.toggleText {
+  flex: 1;
+}
+
+.toggleText label {
+  font-size: 15px;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.toggleHint {
+  font-size: 12px;
+  opacity: 0.5;
+}
+
+.switch {
+  width: 44px;
+  height: 24px;
+  background: rgba(0,0,0,0.2);
+  border-radius: 12px;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid var(--border);
+}
+
+.switchOn {
+  background: var(--primary);
+}
+
+.switchHandle {
+  width: 18px;
+  height: 18px;
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 3px;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.switchOn .switchHandle {
+  left: 21px;
+}
+

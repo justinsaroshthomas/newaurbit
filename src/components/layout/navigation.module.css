@@ -1,0 +1,333 @@
+/* Sidebar Styles */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 24px 20px;
+}
+
+.logoContainer {
+  margin-bottom: 40px;
+  padding-left: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logoText {
+  font-size: 28px;
+  font-weight: 800;
+  background: linear-gradient(to right, #4ade80, #3b82f6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0;
+}
+
+.navLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--foreground);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.navItem:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateX(6px);
+}
+
+.navItem.active {
+  color: #4ade80;
+  background: rgba(74, 222, 128, 0.12);
+}
+
+.navItem.active::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 25%;
+  height: 50%;
+  width: 4px;
+  background: #4ade80;
+  border-radius: 4px 0 0 4px;
+}
+
+.sidebarFooter {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 24px;
+  border-top: 1px solid var(--glass-border);
+}
+
+.userSection {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.avatarMini {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), #3b82f6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 14px;
+  overflow: hidden;
+  object-fit: cover;
+  border: 2px solid rgba(255,255,255,0.1);
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.userName {
+  font-weight: 700;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.logoutBtn {
+  width: 100%;
+  justify-content: center;
+  gap: 12px;
+  background: rgba(239, 68, 68, 0.1) !important;
+  color: #ef4444 !important;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  padding: 12px !important;
+  font-size: 15px !important;
+  transition: all 0.3s ease;
+}
+
+.logoutBtn:hover {
+  background: #ef4444 !important;
+  color: white !important;
+  transform: translateY(-2px);
+}
+
+
+/* Bottom Nav Styles */
+.bottomNav {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  align-items: center;
+  height: 100%;
+  padding: 0 8px;
+}
+
+.bottomNavItem {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  color: var(--foreground);
+  transition: all 0.2s ease;
+}
+
+.bottomNavItem.active {
+  color: var(--primary);
+}
+
+.bottomNavItem:active {
+  transform: scale(0.9);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Top Nav Styles */
+.topNav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  padding: 0 16px;
+  background: var(--surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--glass-border);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.topNavLogo {
+  font-size: 22px;
+  font-weight: 800;
+  background: linear-gradient(to right, var(--primary), #3b82f6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.topNavActions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.iconButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: var(--foreground);
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.notifBadge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #ef4444;
+  color: white;
+  font-size: 10px;
+  font-weight: 800;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--surface);
+}
+
+.notifPanel {
+  position: absolute;
+  top: 70px;
+  right: 16px;
+  width: 320px;
+  max-height: 480px;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.notifHeader {
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.notifHeader h3 {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.markAllBtn {
+  font-size: 12px;
+  color: var(--primary);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.notifList {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 400px;
+}
+
+.notifItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  border-bottom: 1px solid var(--glass-border);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.notifItem:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.unread {
+  background: rgba(74, 222, 128, 0.05);
+}
+
+.notifIcon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.notifContent p {
+  font-size: 14px;
+  line-height: 1.4;
+  margin-bottom: 4px;
+}
+
+.notifContent span {
+  font-size: 11px;
+  opacity: 0.5;
+}
+
+.unreadDot {
+  position: absolute;
+  top: 20px;
+  right: 16px;
+  width: 8px;
+  height: 8px;
+  background: var(--primary);
+  border-radius: 50%;
+}
+
+.emptyNotifs {
+  padding: 48px 24px;
+  text-align: center;
+  opacity: 0.5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+
+.iconButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+@media (min-width: 768px) {
+  .topNav {
+    display: none;
+  }
+}
+
