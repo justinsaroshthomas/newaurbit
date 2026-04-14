@@ -1,0 +1,5 @@
+# Python API is not used by this Next.js deployment.
+# Excluding these prevents Vercel from running `uv pip install`
+# and attempting to deploy Python serverless functions.
+api/
+requirements.txt
