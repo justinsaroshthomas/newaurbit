@@ -51,6 +51,8 @@ export default function Feed({ mood }: { mood: string }) {
   useEffect(() => {
     fetchPosts();
   }, [mood]);
+
+  const handlePost = async () => {
     if (!postText.trim() || !user) return;
 
     // Verify profile exists

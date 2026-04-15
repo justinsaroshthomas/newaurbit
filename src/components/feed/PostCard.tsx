@@ -17,6 +17,8 @@ interface Post {
   author_id: string;
   created_at: string;
   likes_count: number;
+  comments_count?: number;
+  mood?: string;
   profiles: Profile;
 }
 
