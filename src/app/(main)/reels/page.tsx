@@ -6,16 +6,32 @@ import { Heart, MessageCircle, Share2, Upload, Music, User } from 'lucide-react'
 import styles from './reels.module.css';
 import { createClient } from '@/lib/supabase/client';
 
+interface Profile {
+  id: string;
+  username: string;
+  full_name: string;
+  bio: string;
+  avatar_url: string;
+  is_verified: boolean;
+}
+
+interface Reel {
+  id: string;
+  author_id: string;
+  video_url: string;
+  caption: string;
+  likes_count: number;
+  comments_count: number;
+  created_at: string;
+  author: Profile;
+}
+
 export default function ReelsPage() {
   const { user } = useUser();
-  const [reels, setReels] = useState<any[]>([]);
+  const [reels, setReels] = useState<Reel[]>([]);
   const [loading, setLoading] = useState(true);
   const supabase = createClient();
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    loadReels();
-  }, []);
 
   const loadReels = async () => {
     setLoading(true);
@@ -25,12 +41,16 @@ export default function ReelsPage() {
       .order('created_at', { ascending: false });
     
     if (data) {
-      setReels(data);
+      setReels(data as Reel[]);
     }
 
     setLoading(false);
 
   };
+
+  useEffect(() => {
+    loadReels();
+  }, []);
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

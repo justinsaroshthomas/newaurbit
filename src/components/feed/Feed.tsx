@@ -6,16 +6,27 @@ import PostCard from './PostCard';
 import styles from './feed.module.css';
 import { createClient } from '@/lib/supabase/client';
 
+interface Post {
+  id: string;
+  content: string;
+  author_id: string;
+  created_at: string;
+  likes_count: number;
+  profiles: {
+    username: string;
+    full_name: string;
+    avatar_url: string;
+    is_verified: boolean;
+    role: string;
+  };
+}
+
 export default function Feed({ mood }: { mood: string }) {
   const { user } = useUser();
-  const [posts, setPosts] = useState<any[]>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
   const [postText, setPostText] = useState('');
   const [loading, setLoading] = useState(true);
   const supabase = createClient();
-
-  useEffect(() => {
-    fetchPosts();
-  }, [mood]);
 
   const fetchPosts = async () => {
     setLoading(true);
@@ -33,11 +44,13 @@ export default function Feed({ mood }: { mood: string }) {
     }
 
     const { data } = await query;
-    if (data) setPosts(data);
+    if (data) setPosts(data as Post[]);
     setLoading(false);
   };
 
-  const handlePost = async () => {
+  useEffect(() => {
+    fetchPosts();
+  }, [mood]);
     if (!postText.trim() || !user) return;
 
     // Verify profile exists

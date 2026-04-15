@@ -6,10 +6,28 @@ import { createClient } from '@/lib/supabase/client';
 
 export function useNotifications() {
   const { user } = useUser();
-  const [notifications, setNotifications] = useState<any[]>([]);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const supabase = createClient();
+
+  interface Notification {
+    id: string;
+    created_at: string;
+    user_id: string;
+    type: string;
+    content: string;
+    is_read: boolean;
+    sender_id?: string;
+    sender?: any;
+  }
+
+  const playPing = () => {
+    if (!audioRef.current) {
+      audioRef.current = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-software-interface-start-2574.mp3');
+    }
+    audioRef.current.play().catch(() => console.log('Audio autoplay blocked'));
+  };
 
   useEffect(() => {
     if (!user) return;
@@ -40,7 +58,7 @@ export function useNotifications() {
         table: 'notifications',
         filter: `user_id=eq.${user.id}`
       }, (payload) => {
-        const newNotif = payload.new as any;
+        const newNotif = payload.new as Notification;
         setNotifications(prev => [newNotif, ...prev]);
         setUnreadCount(prev => prev + 1);
         playPing();
@@ -48,14 +66,7 @@ export function useNotifications() {
       .subscribe();
 
     return () => { supabase.removeChannel(channel); };
-  }, [user]);
-
-  const playPing = () => {
-    if (!audioRef.current) {
-      audioRef.current = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-software-interface-start-2574.mp3');
-    }
-    audioRef.current.play().catch(e => console.log('Audio autoplay blocked'));
-  };
+  }, [user, supabase]);
 
   const markAsRead = async (id: string) => {
     await supabase.from('notifications').update({ is_read: true }).eq('id', id);

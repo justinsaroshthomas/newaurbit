@@ -6,20 +6,28 @@ import { Search, CheckCircle, Users as UsersIcon, UserMinus, Plus } from 'lucide
 import styles from './explore.module.css';
 import { createClient } from '@/lib/supabase/client';
 
+interface Profile {
+  id: string;
+  username: string;
+  full_name: string;
+  bio: string;
+  avatar_url: string;
+  is_verified: boolean;
+}
+
+interface Circle {
+  owner_id: string;
+  member_id: string;
+  circle_type: 'inner' | 'outer';
+}
+
 export default function ExplorePage() {
   const { user } = useUser();
-  const [users, setUsers] = useState<any[]>([]);
-  const [circles, setCircles] = useState<any[]>([]);
+  const [users, setUsers] = useState<Profile[]>([]);
+  const [circles, setCircles] = useState<Circle[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
   const supabase = createClient();
-
-  useEffect(() => {
-    if (user) {
-      loadUsers();
-      loadCircles();
-    }
-  }, [user]);
 
   const loadCircles = async () => {
     if (!user) return;
@@ -27,7 +35,7 @@ export default function ExplorePage() {
       .from('circles')
       .select('*')
       .eq('owner_id', user.id);
-    if (data) setCircles(data);
+    if (data) setCircles(data as Circle[]);
   };
 
   const loadUsers = async () => {
@@ -37,10 +45,17 @@ export default function ExplorePage() {
       .select('*')
       .limit(20);
     if (data) {
-      setUsers(data.filter(u => u.id !== user?.id));
+      setUsers(data.filter(u => u.id !== user?.id) as Profile[]);
     }
     setLoading(false);
   };
+
+  useEffect(() => {
+    if (user) {
+      loadUsers();
+      loadCircles();
+    }
+  }, [user]);
 
   const handleSearch = async () => {
     if (!searchQuery.trim()) {

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef, useState, useEffect } from 'react';
-import { Camera, X, RefreshCcw, Flashlight, Circle } from 'lucide-react';
+import { X, RefreshCcw } from 'lucide-react';
 import styles from './camera.module.css';
 
 interface CameraModalProps {
@@ -15,11 +15,6 @@ export default function CameraModal({ onClose, onCapture }: CameraModalProps) {
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [facingMode, setFacingMode] = useState<'user' | 'environment'>('environment');
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    startCamera();
-    return () => stopCamera();
-  }, [facingMode]);
 
   const startCamera = async () => {
     setLoading(true);
@@ -48,6 +43,11 @@ export default function CameraModal({ onClose, onCapture }: CameraModalProps) {
       stream.getTracks().forEach(track => track.stop());
     }
   };
+
+  useEffect(() => {
+    startCamera();
+    return () => stopCamera();
+  }, [facingMode]);
 
   const takePhoto = () => {
     if (videoRef.current && canvasRef.current) {

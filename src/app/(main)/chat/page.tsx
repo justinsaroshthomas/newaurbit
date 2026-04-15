@@ -4,8 +4,8 @@ import { useState, useEffect, useRef } from 'react';
 import { useUser } from '@clerk/nextjs';
 import styles from './chat.module.css';
 import { 
-  Send, Phone, Video, MoreVertical, Mic, PhoneOff, MicOff, 
-  VideoOff, Square, X, CheckCircle, Shield, Camera, Image as ImageIcon,
+  Send, Phone, Video, Mic, PhoneOff, MicOff, 
+  VideoOff, X, CheckCircle, Shield, Camera, Image as ImageIcon,
   Maximize2
 } from 'lucide-react';
 import Orbit3D from '@/components/chat/Orbit3D';
@@ -14,19 +14,35 @@ import { createClient } from '@/lib/supabase/client';
 import { encryptContent, decryptContent, getSharedKeyForConversation } from '@/lib/crypto';
 import { useAppConfig } from '@/context/AppConfigContext';
 
+interface Profile {
+  id: string;
+  username: string;
+  full_name: string;
+  avatar_url: string;
+  is_verified: boolean;
+}
+
+interface Message {
+  id: string;
+  sender_id: string;
+  receiver_id: string;
+  content: string;
+  created_at: string;
+  is_voice: boolean;
+}
+
 export default function ChatPage() {
   const { user } = useUser();
   const { lowPowerMode } = useAppConfig();
-  const [isRecording, setIsRecording] = useState(false);
   const [isInCall, setIsInCall] = useState(false);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [isCamOff, setIsCamOff] = useState(false);
-  const [messages, setMessages] = useState<any[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [decryptedMessages, setDecryptedMessages] = useState<Record<string, string>>({});
   const [messageText, setMessageText] = useState('');
-  const [contacts, setContacts] = useState<any[]>([]);
-  const [activeContact, setActiveContact] = useState<any>(null);
+  const [contacts, setContacts] = useState<Profile[]>([]);
+  const [activeContact, setActiveContact] = useState<Profile | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -41,13 +57,13 @@ export default function ChatPage() {
         .select('*')
         .limit(20);
       if (data) {
-        const filtered = data.filter(p => p.id !== user?.id);
+        const filtered = data.filter(p => p.id !== user?.id) as Profile[];
         setContacts(filtered);
         if (filtered.length > 0) setActiveContact(filtered[0]);
       }
     };
     if (user) loadContacts();
-  }, [user]);
+  }, [user, supabase]);
 
   // Decryption logic
   useEffect(() => {
@@ -78,14 +94,14 @@ export default function ChatPage() {
         .select('*')
         .or(`and(sender_id.eq.${user.id},receiver_id.eq.${activeContact.id}),and(sender_id.eq.${activeContact.id},receiver_id.eq.${user.id})`)
         .order('created_at', { ascending: true });
-      if (data) setMessages(data);
+      if (data) setMessages(data as Message[]);
     };
     loadMessages();
 
     const channel = supabase
       .channel(`chat-${activeContact.id}`)
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, (payload) => {
-        const msg = payload.new as any;
+        const msg = payload.new as Message;
         if ((msg.sender_id === user.id && msg.receiver_id === activeContact.id) || (msg.sender_id === activeContact.id && msg.receiver_id === user.id)) {
           setMessages(prev => [...prev, msg]);
         }
@@ -93,7 +109,7 @@ export default function ChatPage() {
       .subscribe();
 
     return () => { supabase.removeChannel(channel); };
-  }, [user, activeContact]);
+  }, [user, activeContact, supabase]);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });
@@ -121,7 +137,7 @@ export default function ChatPage() {
       .select()
       .single();
 
-    if (data) setMessages(prev => [...prev, data]);
+    if (data) setMessages(prev => [...prev, data as Message]);
     setMessageText('');
   };
 
@@ -130,7 +146,7 @@ export default function ChatPage() {
     if (!file || !user) return;
 
     setIsUploading(true);
-    const fileExt = e instanceof Blob ? 'jpg' : file.name.split('.').pop();
+    const fileExt = file instanceof File ? file.name.split('.').pop() : 'jpg';
     const fileName = `${user.id}-${Math.random()}.${fileExt}`;
     const filePath = `chat/${fileName}`;
 
@@ -220,7 +236,7 @@ export default function ChatPage() {
               onClick={() => setActiveContact(contact)}
             >
               <div className={styles.avatar}>
-                {contact.avatar_url ? <img src={contact.avatar_url} /> : (contact.full_name?.[0] || '?')}
+                {contact.avatar_url ? <img src={contact.avatar_url} alt="" /> : (contact.full_name?.[0] || '?')}
               </div>
               <div className={styles.chatListInfo}>
                 <div className={styles.nameRow}>

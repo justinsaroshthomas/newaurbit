@@ -16,7 +16,7 @@ export default function NotFound() {
         <h1 style={{ fontSize: '80px', fontWeight: '900', margin: '0' }}>404</h1>
         <h2 style={{ fontSize: '24px', opacity: 0.8, marginBottom: '32px' }}>Lost in the Cosmic Orbit</h2>
         <p style={{ maxWidth: '400px', margin: '0 auto 40px', opacity: 0.6 }}>
-          The space you're looking for has drifted into a black hole or doesn't exist in this universe.
+          The space you&apos;re looking for has drifted into a black hole or doesn&apos;t exist in this universe.
         </p>
         
         <Link href="/">

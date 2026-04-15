@@ -19,6 +19,7 @@ export function AppConfigProvider({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
     const savedTheme = localStorage.getItem('aurbit-theme') as Theme;
     const savedPower = localStorage.getItem('aurbit-low-power') === 'true';
@@ -42,17 +43,17 @@ export function AppConfigProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-    if (!mounted) {
-      return <>{children}</>;
-    }
-
-    return (
-      <AppConfigContext.Provider value={{ theme, setTheme: updateTheme, lowPowerMode, setLowPowerMode: updatePower }}>
+  return (
+    <AppConfigContext.Provider value={{ theme, setTheme: updateTheme, lowPowerMode, setLowPowerMode: updatePower }}>
+      {!mounted ? (
+        <>{children}</>
+      ) : (
         <div data-theme={theme} className={lowPowerMode ? 'no-lag' : ''}>
           {children}
         </div>
-      </AppConfigContext.Provider>
-    );
+      )}
+    </AppConfigContext.Provider>
+  );
 }
 
 export function useAppConfig() {

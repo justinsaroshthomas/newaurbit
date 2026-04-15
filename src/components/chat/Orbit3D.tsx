@@ -7,6 +7,7 @@ import * as THREE from 'three';
 
 function StarField({ count = 500 }) {
   const points = useMemo(() => {
+    // eslint-disable-next-line react-hooks/purity
     const p = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
         p[i * 3] = (Math.random() - 0.5) * 50;
@@ -50,7 +51,15 @@ function CentralPlanet({ lowPower = false }) {
   );
 }
 
-function OrbitingSatellite({ color, distance, speed, offset, size = 0.2 }) {
+interface SatelliteProps {
+  color: string;
+  distance: number;
+  speed: number;
+  offset: number;
+  size?: number;
+}
+
+function OrbitingSatellite({ color, distance, speed, offset, size = 0.2 }: SatelliteProps) {
   const groupRef = useRef<THREE.Group>(null!);
 
   useFrame((state) => {

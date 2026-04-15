@@ -3,8 +3,25 @@
 import { Heart, MessageCircle, Trash2, Share2, CheckCircle, Crown, Code, Shield } from 'lucide-react';
 import styles from './feed.module.css';
 
+interface Profile {
+  username: string;
+  full_name: string;
+  avatar_url: string;
+  is_verified: boolean;
+  role: string;
+}
+
+interface Post {
+  id: string;
+  content: string;
+  author_id: string;
+  created_at: string;
+  likes_count: number;
+  profiles: Profile;
+}
+
 interface PostCardProps {
-  post: any;
+  post: Post;
   onLike?: () => void;
   onDelete?: () => void;
 }

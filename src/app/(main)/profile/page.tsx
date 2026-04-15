@@ -2,19 +2,37 @@
 
 import { useState, useEffect } from 'react';
 import { useUser, UserButton } from '@clerk/nextjs';
-import { Settings, MapPin, Link as LinkIcon, Camera, Save, LogOut, CheckCircle, Zap, Shield } from 'lucide-react';
+import { Settings, Link as LinkIcon, Camera, Save, CheckCircle, Zap } from 'lucide-react';
 import styles from './profile.module.css';
 import { createClient } from '@/lib/supabase/client';
 import { useAppConfig } from '@/context/AppConfigContext';
+
+interface Profile {
+  id: string;
+  username: string;
+  full_name: string;
+  bio: string;
+  website: string;
+  avatar_url: string;
+  is_verified: boolean;
+}
+
+interface Post {
+  id: string;
+  author_id: string;
+  content: string;
+  created_at: string;
+  likes_count: number;
+}
 
 export default function ProfilePage() {
   const { user } = useUser();
   const { theme, setTheme, lowPowerMode, setLowPowerMode } = useAppConfig();
   const [activeTab, setActiveTab] = useState('Timeline');
   const supabase = createClient();
-  const [posts, setPosts] = useState<any[]>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
   const [saving, setSaving] = useState(false);
-  const [profileData, setProfileData] = useState<any>(null);
+  const [profileData, setProfileData] = useState<Profile | null>(null);
 
   const [formData, setFormData] = useState({
     full_name: '',
@@ -32,7 +50,7 @@ export default function ProfilePage() {
         .eq('id', user.id)
         .single();
       if (data) {
-        setProfileData(data);
+        setProfileData(data as Profile);
         setFormData({
           full_name: data.full_name || user.fullName || '',
           bio: data.bio || '',
@@ -47,7 +65,7 @@ export default function ProfilePage() {
       }
     };
     loadProfile();
-  }, [user]);
+  }, [user, supabase]);
 
   // Load user's posts
   useEffect(() => {
@@ -58,10 +76,10 @@ export default function ProfilePage() {
         .select('*')
         .eq('author_id', user.id)
         .order('created_at', { ascending: false });
-      if (data) setPosts(data);
+      if (data) setPosts(data as Post[]);
     };
     loadPosts();
-  }, [user]);
+  }, [user, supabase]);
 
   const handleSave = async () => {
     if (!user) return;
@@ -120,7 +138,7 @@ export default function ProfilePage() {
             <div className={styles.nameRow}>
               <h1 className={styles.userName}>{formData.full_name || user?.fullName || 'Aurbit User'}</h1>
               {profileData?.is_verified && (
-                <CheckCircle size={20} className="verified-badge" title="Verified Orbit" />
+                <CheckCircle size={20} className="verified-badge" />
               )}
             </div>
             <p className={styles.bio}>{formData.bio || 'No bio yet'}</p>
@@ -132,7 +150,7 @@ export default function ProfilePage() {
           </div>
 
           <div style={{ marginLeft: 'auto', paddingTop: '16px' }}>
-            <UserButton afterSignOutUrl="/login" />
+            <UserButton />
           </div>
         </div>
 
